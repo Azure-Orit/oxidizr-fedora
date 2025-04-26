@@ -127,7 +127,7 @@ mod tests {
         assert!(coreutils.enable().is_ok());
 
         let commands = runner.commands.clone().into_inner();
-        assert_eq!(commands, &["apt-get install -y rust-coreutils"]);
+        assert_eq!(commands, &["dnf install -y uutils-coreutils"]);
 
         let backed_up_files = runner.backed_up_files.clone().into_inner();
         let expected = vec!["/usr/bin/date".to_string(), "/usr/bin/sort".to_string()];
@@ -157,7 +157,7 @@ mod tests {
         assert!(findutils.enable().is_ok());
 
         let commands = runner.commands.clone().into_inner();
-        assert_eq!(commands, &["apt-get install -y rust-findutils"]);
+        assert_eq!(commands, &["dnf install -y uutils-findutils"]);
 
         let backed_up_files = runner.backed_up_files.clone().into_inner();
         let expected = vec!["/usr/bin/find".to_string(), "/usr/bin/xargs".to_string()];
@@ -182,7 +182,7 @@ mod tests {
     #[test]
     fn test_uutils_restore_installed() {
         let runner = coreutils_compatible_runner();
-        runner.mock_install_package("rust-coreutils");
+        runner.mock_install_package("uutils-coreutils");
 
         let coreutils = coreutils_fixture(&runner);
         assert!(coreutils.disable().is_ok());
@@ -192,7 +192,7 @@ mod tests {
 
         let commands = runner.commands.clone().into_inner();
         assert_eq!(commands.len(), 1);
-        assert!(commands.contains(&"apt-get remove -y rust-coreutils".to_string()));
+        assert!(commands.contains(&"dnf remove -y uutils-coreutils".to_string()));
 
         let restored_files = runner.restored_files.clone().into_inner();
         let expected = vec!["/usr/bin/date".to_string(), "/usr/bin/sort".to_string()];
@@ -204,17 +204,17 @@ mod tests {
             "coreutils",
             system,
             "rust-coreutils",
-            &["24.04", "24.10", "25.04"],
+            &["42", "24.10", "25.04"],
             Some(PathBuf::from("/usr/bin/coreutils")),
-            PathBuf::from("/usr/lib/cargo/bin/coreutils"),
+            PathBuf::from("/usr/libexec/uutils-coreutils"),
         )
     }
 
     fn coreutils_compatible_runner() -> MockSystem {
         let runner = MockSystem::default();
         runner.mock_files(vec![
-            ("/usr/lib/cargo/bin/coreutils/date", "", false),
-            ("/usr/lib/cargo/bin/coreutils/sort", "", false),
+            ("/usr/libexec/uutils-coreutils/date", "", false),
+            ("/usr/libexec/uutils-oreutils/sort", "", false),
             ("/usr/bin/sort", "", true),
             ("/usr/bin/date", "", true),
         ]);
@@ -226,17 +226,17 @@ mod tests {
             "findutils",
             system,
             "rust-findutils",
-            &["24.04", "24.10", "25.04"],
+            &["42", "24.10", "25.04"],
             None,
-            PathBuf::from("/usr/lib/cargo/bin/findutils"),
+            PathBuf::from("/usr/libexec/uutils-findutils"),
         )
     }
 
     fn findutils_compatible_runner() -> MockSystem {
         let runner = MockSystem::default();
         runner.mock_files(vec![
-            ("/usr/lib/cargo/bin/findutils/find", "", false),
-            ("/usr/lib/cargo/bin/findutils/xargs", "", false),
+            ("/usr/libexec/uutils-find", "", false),
+            ("/usr/libexec/uutils-xargs", "", false),
             ("/usr/bin/find", "", true),
             ("/usr/bin/xargs", "", true),
         ]);
@@ -246,7 +246,7 @@ mod tests {
     fn incompatible_runner() -> MockSystem {
         MockSystem::new(Distribution {
             id: "Ubuntu".to_string(),
-            release: "20.04".to_string(),
+            release: "41".to_string(),
         })
     }
 }

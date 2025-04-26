@@ -36,21 +36,14 @@ pub trait Worker {
 
     /// Install a package using the system package manager.
     fn install_package(&self, package: &str) -> Result<()> {
-        let cmd = Command::build("apt-get", &["install", "-y", package]);
+        let cmd = Command::build("dnf", &["install", "-y", package]);
         self.run(&cmd)?;
         Ok(())
     }
 
     /// Remove a package using the system package manager.
     fn remove_package(&self, package: &str) -> Result<()> {
-        let cmd = Command::build("apt-get", &["remove", "-y", package]);
-        self.run(&cmd)?;
-        Ok(())
-    }
-
-    /// Update the package lists using the system package manager.
-    fn update_package_lists(&self) -> Result<()> {
-        let cmd = Command::build("apt-get", &["update"]);
+        let cmd = Command::build("dnf", &["remove", "-y", package]);
         self.run(&cmd)?;
         Ok(())
     }

@@ -116,17 +116,6 @@ fn main() -> Result<()> {
     // Initialise the system, gather system information.
     let system = System::new()?;
 
-    // Exit if the application is run on a non-Ubuntu machine (unless compatibility check is skipped).
-    if !args.no_compatibility_check {
-        anyhow::ensure!(
-            system.distribution()?.id == "Ubuntu",
-            "This program only supports Ubuntu"
-        );
-    } else if system.distribution()?.id != "Ubuntu" {
-        warn!(
-            "Running on a non-Ubuntu distribution. This is unsupported and may cause system instability."
-        );
-    }
 
     // Get selected experiments from the command line arguments
     let selected = selected_experiments(args.all, args.experiments.clone(), &system);
@@ -146,9 +135,6 @@ fn enable(
     no_compatibility_check: bool,
 ) -> Result<()> {
     confirm_or_exit(yes);
-
-    info!("Updating apt package cache");
-    system.update_package_lists()?;
 
     for e in experiments.iter() {
         e.enable(no_compatibility_check)?;

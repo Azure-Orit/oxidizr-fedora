@@ -30,7 +30,7 @@ impl<'a> SudoRsExperiment<'a> {
     /// Reports the first supported release for the experiment.
     pub fn supported_releases(&self) -> Vec<String> {
         vec![
-            "24.04".to_string(),
+            "42".to_string(),
             "24.10".to_string(),
             "25.04".to_string(),
         ]
@@ -83,9 +83,9 @@ impl<'a> SudoRsExperiment<'a> {
     /// List of files from the package to replace system equivalents with.
     fn sudors_files() -> Vec<PathBuf> {
         vec![
-            PathBuf::from("/usr/lib/cargo/bin/su"),
-            PathBuf::from("/usr/lib/cargo/bin/sudo"),
-            PathBuf::from("/usr/lib/cargo/bin/visudo"),
+            PathBuf::from("/usr/bin/su-rs"),
+            PathBuf::from("/usr/bin/sudo-rs"),
+            PathBuf::from("/usr/bin/visudo-rs"),
         ]
     }
 }
@@ -110,7 +110,7 @@ mod tests {
         assert!(sudors.enable().is_ok());
 
         let commands = runner.commands.clone().into_inner();
-        assert_eq!(commands, &["apt-get install -y sudo-rs"]);
+        assert_eq!(commands, &["dnf install -y sudo-rs"]);
 
         let backed_up_files = runner.backed_up_files.clone().into_inner();
         let expected = vec![
@@ -123,15 +123,15 @@ mod tests {
         let created_symlinks = runner.created_symlinks.clone().into_inner();
         let expected = vec![
             (
-                "/usr/lib/cargo/bin/su".to_string(),
+                "/usr/bin/su-rs".to_string(),
                 "/usr/bin/su".to_string(),
             ),
             (
-                "/usr/lib/cargo/bin/sudo".to_string(),
+                "/usr/bin/sudo-rs".to_string(),
                 "/usr/bin/sudo".to_string(),
             ),
             (
-                "/usr/lib/cargo/bin/visudo".to_string(),
+                "/usr/bin/sudo-rs".to_string(),
                 "/usr/sbin/visudo".to_string(),
             ),
         ];
@@ -153,7 +153,7 @@ mod tests {
 
         let commands = runner.commands.clone().into_inner();
         assert_eq!(commands.len(), 1);
-        assert!(commands.contains(&"apt-get remove -y sudo-rs".to_string()));
+        assert!(commands.contains(&"dnf remove -y sudo-rs".to_string()));
 
         let restored_files = runner.restored_files.clone().into_inner();
         let expected = vec![
@@ -184,7 +184,7 @@ mod tests {
     fn incompatible_runner() -> MockSystem {
         MockSystem::new(Distribution {
             id: "Ubuntu".to_string(),
-            release: "20.04".to_string(),
+            release: "41".to_string(),
         })
     }
 }
