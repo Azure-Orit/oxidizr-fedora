@@ -1,4 +1,5 @@
-# oxidizr
+# WIP DO NOT INSTALL
+## oxidizr-fedora
 
 <a href="https://github.com/jnsgruk/oxidizr/actions/workflows/push.yml"><img src="https://github.com/jnsgruk/oxidizr/actions/workflows/push.yml/badge.svg"></a>
 <a href="https://github.com/jnsgruk/oxidizr/actions/workflows/release.yml"><img src="https://github.com/jnsgruk/oxidizr/actions/workflows/release.yml/badge.svg"></a>
