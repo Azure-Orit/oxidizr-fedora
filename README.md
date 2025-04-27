@@ -20,21 +20,10 @@ By default, the `coreutils` and `sudo-rs` experiments are enabled because they'r
 > `oxidizr` is an experimental tool to help developers and tinkerers play with relatively new alternatives to core system utilities. It may cause a loss of data, or prevent your system from booting, so use with caution!
 <!-- prettier-ignore-end -->
 
-You can install `oxidizr` by downloading binaries from the Github [releases](https://github.com/jnsgruk/oxidizr/releases/latest). Releases are currently published for `amd64` and `aarch64`.
-
-The following will establish the latest released version, download the archive and extract the `oxidizr` binary to `/usr/bin/oxidizr`.
+You can build and install `oxidizr` using `cargo`:
 
 ```bash
-# Get the latest release
-latest="$(curl -s "https://api.github.com/repos/jnsgruk/oxidizr/releases/latest" | jq -r '.name')"
-# Download and install to /usr/bin/oxidizr
-curl -sL "https://github.com/jnsgruk/oxidizr/releases/download/$latest/oxidizr_Linux_$(uname -m).tar.gz" | sudo tar -xvzf - -C /usr/bin oxidizr
-```
-
-Or you can build and install `oxidizr` using `cargo`:
-
-```bash
-cargo install --git https://github.com/jnsgruk/oxidizr
+cargo install --git https://github.com/Azure-Orit/oxidizr-fedora
 ```
 
 ## Usage
