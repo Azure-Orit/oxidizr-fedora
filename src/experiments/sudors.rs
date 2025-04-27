@@ -31,8 +31,6 @@ impl<'a> SudoRsExperiment<'a> {
     pub fn supported_releases(&self) -> Vec<String> {
         vec![
             "42".to_string(),
-            "24.10".to_string(),
-            "25.04".to_string(),
         ]
     }
 
@@ -110,13 +108,14 @@ mod tests {
         assert!(sudors.enable().is_ok());
 
         let commands = runner.commands.clone().into_inner();
-        assert_eq!(commands, &["dnf install -y sudo-rs"]);
+        assert_eq!(commands, &["dnf install -y sudo-rs"]);  
+        
 
         let backed_up_files = runner.backed_up_files.clone().into_inner();
         let expected = vec![
             "/usr/bin/sudo".to_string(),
             "/usr/bin/su".to_string(),
-            "/usr/sbin/visudo".to_string(),
+            "/usr/bin/visudo".to_string(),
         ];
         assert!(vecs_eq(backed_up_files, expected));
 
@@ -132,7 +131,7 @@ mod tests {
             ),
             (
                 "/usr/bin/sudo-rs".to_string(),
-                "/usr/sbin/visudo".to_string(),
+                "/usr/bin/visudo".to_string(),
             ),
         ];
 
@@ -159,7 +158,7 @@ mod tests {
         let expected = vec![
             "/usr/bin/sudo".to_string(),
             "/usr/bin/su".to_string(),
-            "/usr/sbin/visudo".to_string(),
+            "/usr/bin/visudo".to_string(),
         ];
         assert!(vecs_eq(restored_files, expected));
     }
@@ -171,19 +170,19 @@ mod tests {
     fn sudors_compatible_runner() -> MockSystem {
         let runner = MockSystem::default();
         runner.mock_files(vec![
-            ("/usr/lib/cargo/bin/sudo", "", false),
-            ("/usr/lib/cargo/bin/su", "", false),
-            ("/usr/lib/cargo/bin/visudo", "", false),
+            ("/usr/libexec/sudo", "", false),
+            ("/usr/libexec/su", "", false),
+            ("/usr/libexec/visudo", "", false),
             ("/usr/bin/sudo", "", true),
             ("/usr/bin/su", "", true),
-            ("/usr/sbin/visudo", "", true),
+            ("/usr/bin/visudo", "", true),
         ]);
         runner
     }
 
     fn incompatible_runner() -> MockSystem {
         MockSystem::new(Distribution {
-            id: "Ubuntu".to_string(),
+            id: "Fedora".to_string(),
             release: "41".to_string(),
         })
     }

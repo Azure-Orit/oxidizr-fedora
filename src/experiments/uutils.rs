@@ -150,36 +150,6 @@ mod tests {
     }
 
     #[test]
-    fn test_uutils_install_success_non_unified_binary() {
-        let runner = findutils_compatible_runner();
-        let findutils = findutils_fixture(&runner);
-
-        assert!(findutils.enable().is_ok());
-
-        let commands = runner.commands.clone().into_inner();
-        assert_eq!(commands, &["dnf install -y uutils-findutils"]);
-
-        let backed_up_files = runner.backed_up_files.clone().into_inner();
-        let expected = vec!["/usr/bin/find".to_string(), "/usr/bin/xargs".to_string()];
-        assert!(vecs_eq(backed_up_files, expected));
-
-        let created_symlinks = runner.created_symlinks.clone().into_inner();
-        let expected = vec![
-            (
-                "/usr/lib/cargo/bin/findutils/find".to_string(),
-                "/usr/bin/find".to_string(),
-            ),
-            (
-                "/usr/lib/cargo/bin/findutils/xargs".to_string(),
-                "/usr/bin/xargs".to_string(),
-            ),
-        ];
-
-        assert!(vecs_eq(created_symlinks, expected));
-        assert_eq!(runner.restored_files.clone().into_inner().len(), 0);
-    }
-
-    #[test]
     fn test_uutils_restore_installed() {
         let runner = coreutils_compatible_runner();
         runner.mock_install_package("uutils-coreutils");
@@ -203,7 +173,7 @@ mod tests {
         UutilsExperiment::new(
             "coreutils",
             system,
-            "rust-coreutils",
+            "uutils-coreutils",
             &["42", "24.10", "25.04"],
             Some(PathBuf::from("/usr/bin/coreutils")),
             PathBuf::from("/usr/libexec/uutils-coreutils"),
@@ -221,31 +191,9 @@ mod tests {
         runner
     }
 
-    fn findutils_fixture(system: &MockSystem) -> UutilsExperiment {
-        UutilsExperiment::new(
-            "findutils",
-            system,
-            "rust-findutils",
-            &["42", "24.10", "25.04"],
-            None,
-            PathBuf::from("/usr/libexec/uutils-findutils"),
-        )
-    }
-
-    fn findutils_compatible_runner() -> MockSystem {
-        let runner = MockSystem::default();
-        runner.mock_files(vec![
-            ("/usr/libexec/uutils-find", "", false),
-            ("/usr/libexec/uutils-xargs", "", false),
-            ("/usr/bin/find", "", true),
-            ("/usr/bin/xargs", "", true),
-        ]);
-        runner
-    }
-
     fn incompatible_runner() -> MockSystem {
         MockSystem::new(Distribution {
-            id: "Ubuntu".to_string(),
+            id: "Fedora".to_string(),
             release: "41".to_string(),
         })
     }

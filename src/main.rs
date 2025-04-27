@@ -116,6 +116,18 @@ fn main() -> Result<()> {
     // Initialise the system, gather system information.
     let system = System::new()?;
 
+    // Exit if the application is run on a non-Ubuntu machine (unless compatibility check is skipped).
+    if !args.no_compatibility_check {
+        anyhow::ensure!(
+            system.distribution()?.id == "Fedora",
+            "This program only supports Fedora"
+        );
+    } else if system.distribution()?.id != "Ubuntu" {
+        warn!(
+            "Running on a non-Fedora distribution. This is unsupported and may cause system instability."
+        );
+    }
+
 
     // Get selected experiments from the command line arguments
     let selected = selected_experiments(args.all, args.experiments.clone(), &system);

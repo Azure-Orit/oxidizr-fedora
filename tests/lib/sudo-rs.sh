@@ -9,7 +9,7 @@ ensure_sudors_installed() {
     ls -la /usr/bin | MATCH ".su.oxidizr.bak"
     /usr/bin/su --version 2>&1 | MATCH "su-rs"
 
-    ls -la /usr/bin/visudo | MATCH "/usr/sbin/visudo -> /usr/bin/visudo-rs"
+    ls -la /usr/bin/visudo | MATCH "/usr/bin/visudo -> /usr/bin/visudo-rs"
     ls -la /usr/bin | MATCH ".visudo.oxidizr.bak"
 }
 
@@ -24,6 +24,6 @@ ensure_sudors_absent() {
     ls -la /usr/bin | NOMATCH ".su.oxidizr.bak"
     /usr/bin/su --version 2>&1 | NOMATCH "su-rs"
 
-    ls -la /usr/bin/visudo | NOMATCH "/usr/sbin/visudo -> /usr/bin/visudo-rs"
+    ls -la /usr/bin/visudo | NOMATCH "/usr/bin/visudo -> /usr/bin/visudo-rs"
     ls -la /usr/bin | NOMATCH ".visudo.oxidizr.bak"
 }

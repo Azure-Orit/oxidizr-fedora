@@ -50,7 +50,7 @@ pub trait Worker {
 
     /// Check if a package is installed using the system package manager.
     fn check_installed(&self, package: &str) -> Result<bool> {
-        let cmd = Command::build("dpkg-query", &["-s", package]);
+        let cmd = Command::build("dnf", &["list", package]);
         match self.run(&cmd) {
             Ok(_) => Ok(true),
             Err(_) => Ok(false),

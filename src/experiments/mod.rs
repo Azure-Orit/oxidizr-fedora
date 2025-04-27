@@ -78,22 +78,7 @@ pub fn all_experiments<'a>(system: &'a impl Worker) -> Vec<Experiment<'a>> {
             Some(PathBuf::from("/usr/bin/coreutils")),
             PathBuf::from("/usr/libexec/uutils-coreutils"),
         )),
-        Experiment::Uutils(UutilsExperiment::<'a>::new(
-            "diffutils",
-            system,
-            "uutils-diffutils",
-            &["42"],
-            Some(PathBuf::from("/usr/libexec/uutils-diffutils")),
-            PathBuf::from("/usr/libexec/uutils-diffutils"),
-        )),
-        Experiment::Uutils(UutilsExperiment::<'a>::new(
-            "findutils",
-            system,
-            "uutils-findutils",
-            &["42"],
-            None,
-            PathBuf::from("/usr/libexec/uutils-findutils"),
-        )),
+
         Experiment::SudoRs(SudoRsExperiment::<'a>::new(system)),
     ]
 }

@@ -28,8 +28,8 @@ pub mod tests {
     impl Default for MockSystem {
         fn default() -> Self {
             Self::new(Distribution {
-                id: "Ubuntu".to_string(),
-                release: "24.04".to_string(),
+                id: "Fedora".to_string(),
+                release: "42".to_string(),
             })
         }
     }
