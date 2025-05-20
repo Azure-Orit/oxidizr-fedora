@@ -11,12 +11,13 @@ It currently supports the following experiments:
 - [uutils coreutils](https://github.com/uutils/coreutils)
 - [sudo-rs](https://github.com/trifectatechfoundation/sudo-rs)
 
-## Installation
 
-### Dependencies
+## Dependencies
 - lsb_release
 - cargo
 - rust
+
+## Installation
 
 <!-- prettier-ignore-start -->
 > [!WARNING]
