@@ -11,9 +11,12 @@ It currently supports the following experiments:
 - [uutils coreutils](https://github.com/uutils/coreutils)
 - [sudo-rs](https://github.com/trifectatechfoundation/sudo-rs)
 
-By default, the `coreutils` and `sudo-rs` experiments are enabled because they're the most complete, stable experiments. Others can be toggled using command line arguments shown below.
-
 ## Installation
+
+### Dependencies
+- lsb_release
+- cargo
+- rust
 
 <!-- prettier-ignore-start -->
 > [!WARNING]
