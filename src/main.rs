@@ -36,7 +36,7 @@ use clap::{Parser, Subcommand};
 use clap_verbosity_flag::{InfoLevel, Verbosity};
 use experiments::{Experiment, all_experiments};
 use inquire::Confirm;
-use tracing::{info, warn};
+use tracing::{warn};
 use tracing_subscriber::{fmt, prelude::*};
 use utils::{System, Worker, vecs_eq};
 
@@ -122,7 +122,7 @@ fn main() -> Result<()> {
             system.distribution()?.id == "Fedora",
             "This program only supports Fedora"
         );
-    } else if system.distribution()?.id != "Ubuntu" {
+    } else if system.distribution()?.id != "Fedora" {
         warn!(
             "Running on a non-Fedora distribution. This is unsupported and may cause system instability."
         );
